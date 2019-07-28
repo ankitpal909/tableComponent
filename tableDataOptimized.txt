@@ -1,0 +1,145 @@
+<aura:component>
+    
+    <!-- attributes -->
+    <aura:attribute name="opportunity"
+                    type="List"
+                    default="[{ Name : 'nameOne', Stage : 'stageOne', Date : '20/10/2018', Amount : 1541},
+                             { Name : 'nameTwo', Stage : 'stageTwo', Date : '20/10/2017', Amount : 1524},
+                             { Name : 'nameThree', Stage : 'stageThree', Date : '20/10/2016', Amount : 1545},
+                             { Name : 'nameFour', Stage : 'stageFour', Date : '20/10/2015', Amount : 1513656}]" />
+    <aura:attribute name="sortedBy" type="String"/>
+    <aura:attribute name="sortOrder" type="String" default="asc" />
+    <!--attributes ..-->
+    
+    <lightning:card  title="Table view" variant="Narrow" iconName="action:record" class="slds-table_bordered slds-theme_shade">
+        <aura:if isTrue="{!v.opportunity.length==0}" >
+            <table class="slds-table slds-table_cell-buffer slds-no-row-hover slds-table_bordered" >
+                <thead >
+                    <tr class="slds-text-title_bold slds-text-title_caps">
+                        <th class="slds-truncate slds-is-sortable" title="Opportunity Name" scope="col">
+                            Opportunity Name
+                        </th>
+                        <th scope="col" class="slds-truncate slds-is-sortable" title="Stage">
+                            Stage
+                        </th>
+                        <th scope="col" class="slds-truncate slds-is-sortable" title="Close Date">
+                            Close Date
+                        </th>
+                        <th scope="col" class="slds-truncate slds-is-sortable" title="Amount">
+                            Amount
+                        </th>
+                    </tr>
+                </thead>
+            </table>              
+            <div class="slds-align_absolute-center slds-card__body" >
+                No Records To Display ..
+            </div>
+            <aura:set attribute="else" >
+                <table class="slds-table slds-table_cell-buffer slds-no-row-hover slds-table_bordered slds-table_fixed-layout">            
+                    <thead>
+                        <tr class="slds-text-title_bold slds-text-title_caps">
+                            <th class="slds-truncate slds-is-sortable " title="Opportunity Name" scope="col" >
+                                Opportunity Name
+                                <lightning:icon class="slds-theme_shade"
+                                                iconName="{!v.sortOrder=='asc' ? 'utility:arrowup' : 'utility:arrowdown'}"
+                                                size="xx-small"
+                                                aura:id="Name"
+                                                onclick="{!c.sorting}" />
+                            </th>
+                            <th class="slds-truncate slds-is-sortable " title="Stage" scope="col" >
+                                Stage
+                                <lightning:icon class="slds-theme_shade"
+                                                iconName="{!v.sortOrder=='asc' ? 'utility:arrowup' : 'utility:arrowdown'}"
+                                                size="xx-small"
+                                                aura:id="Stage"
+                                                onclick="{!c.sorting}" />
+                            </th>
+                            <th class="slds-truncate slds-is-sortable " title="Close Date" scope="col" >
+                                Close Date
+                                <lightning:icon class="slds-theme_shade"
+                                                iconName="{!v.sortOrder=='asc' ? 'utility:arrowup' : 'utility:arrowdown'}"
+                                                size="xx-small"
+                                                aura:id="Date"
+                                                onclick="{!c.sorting}" />
+                            </th>
+                            <th class="slds-truncate slds-is-sortable " title="Amount" scope="col" >
+                                Amount
+                                <lightning:icon class="slds-theme_shade"
+                                                iconName="{!v.sortOrder=='asc' ? 'utility:arrowup' : 'utility:arrowdown'}"
+                                                size="xx-small"
+                                                aura:id="Amount"
+                                                onclick="{!c.sorting}" />
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <aura:iteration items="{!v.opportunity}" var="opportunityValues" >
+                            <tr>
+                                <aura:if isTrue="{!empty(opportunityValues.Name)}" >
+                                    <th>
+                                        -
+                                    </th>
+                                    <aura:set attribute="else" >
+                                        <th >
+                                            <div class="slds-truncate tooltip">
+                                                {!opportunityValues.Name}
+                                                <span class="tooltiptext slds-popover slds-popover__body">
+                                                    {!opportunityValues.Name}
+                                                </span>
+                                            </div>
+                                        </th>
+                                    </aura:set>
+                                </aura:if>
+                                <aura:if isTrue="{!empty(opportunityValues.Stage)}" >
+                                    <th>
+                                        -
+                                    </th>
+                                    <aura:set attribute="else" >
+                                        <th >
+                                            <div class="slds-truncate tooltip">
+                                                {!opportunityValues.Stage}
+                                                <span class="tooltiptext slds-popover slds-popover__body">
+                                                    {!opportunityValues.Stage}
+                                                </span>
+                                            </div>
+                                        </th>
+                                    </aura:set>
+                                </aura:if>
+                                <aura:if isTrue="{!empty(opportunityValues.Date)}" >
+                                    <th>
+                                        -
+                                    </th>
+                                    <aura:set attribute="else" >
+                                        <th >
+                                            <div class="slds-truncate tooltip">
+                                                {!opportunityValues.Date}
+                                                <span class="tooltiptext slds-popover slds-popover__body">
+                                                    {!opportunityValues.Date}
+                                                </span>
+                                            </div>
+                                        </th>
+                                    </aura:set>
+                                </aura:if>
+                                <aura:if isTrue="{!empty(opportunityValues.Amount)}" >
+                                    <th>
+                                        -
+                                    </th>
+                                    <aura:set attribute="else" >
+                                        <th >
+                                            <div class="slds-truncate tooltip">
+                                                {!opportunityValues.Amount}
+                                                <span class="tooltiptext slds-popover slds-popover__body">
+                                                    {!opportunityValues.Amount}
+                                                </span>
+                                            </div>
+                                        </th>
+                                    </aura:set>
+                                </aura:if>
+                            </tr>
+                        </aura:iteration>
+                    </tbody>
+                </table>
+            </aura:set>
+        </aura:if>
+    </lightning:card>
+</aura:component>

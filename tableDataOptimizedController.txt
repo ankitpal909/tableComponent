@@ -1,0 +1,5 @@
+({    
+    sorting : function(component, event, helper) {
+        helper.sorting(component, event, helper);
+    },
+})

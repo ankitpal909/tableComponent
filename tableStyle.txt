@@ -1,0 +1,26 @@
+.THIS table {
+    table-layout:fixed;
+}
+.THIS  .tooltip > .tooltiptext {
+    display:none;
+}
+
+
+.THIS .tooltip:hover .tooltiptext{
+    display: block;
+    position: absolute;
+    z-index: 1;
+    overflow: visible;
+    
+    left:30%;
+    bottom:10%;
+    
+    width: auto;
+    height: auto;
+    
+    background-color:#fff;
+    text-align: left;
+    
+    
+    padding:5px;    
+}

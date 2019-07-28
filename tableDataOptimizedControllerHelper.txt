@@ -1,0 +1,30 @@
+({
+    sorting : function(component, event, helper) {
+        var id = event.getSource().getLocalId();
+        var sortDirection = component.get("v.sortOrder");
+        component.set("v.sortedBy", id);
+        helper.sortData(component, id, sortDirection); 
+    },
+    
+    sortData : function(component, id, sortDirection){
+        var opportunityValue = component.get("v.opportunity");          
+        var reverse = sortDirection !== 'asc';
+        opportunityValue.sort(this.sortBy(id, reverse));
+        component.set("v.opportunity", opportunityValue);
+        
+        if(component.get("v.sortOrder")=='asc'){
+            component.set("v.sortOrder", 'desc');
+        }
+        else{
+            component.set("v.sortOrder", 'asc');
+        }    
+    },
+    
+    sortBy: function (id, reverse, primer) {
+        var key = primer ? function(x) {return primer(x[id])} : function(x) {return x[id]};
+        reverse = !reverse ? 1 : -1;
+        return function (a, b) {
+            return a = key(a), b = key(b), reverse * ((a>b) -(b>a));
+        }
+    },
+})

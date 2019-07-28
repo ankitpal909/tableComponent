@@ -1,0 +1,350 @@
+<aura:component >
+    
+    <!--attributes ..-->
+    <aura:attribute name="opportunityObject"
+                    type="Opportunity"
+                    default="{'sobjectType' : 'Opportunity',
+                             'Name': ['zameSeven',
+                             'nameTwo',
+                             'nameThree',
+                             'nameFour'],
+                             
+                             'Stage' : ['stageOne',
+                             'stageTwo',
+                             'stageThree',
+                             'stageFour'],
+                             
+                             'Date' : ['20/10/2018',
+                             '20/10/2017',
+                             '20/10/2016',
+                             '20/10/2015'],
+                             
+                             'Amount' : ['456465',
+                             '351564156',
+                             '153',
+                             '14512']}" />    
+    <aura:attribute name="sortedBy" type="String"/> 
+    <aura:attribute name="sortOrder" type="String" default="asc" />
+    <!--attributes ..-->
+    
+    <!--handler ..-->
+    <aura:handler name="init" action="{!c.doInit}" value="{!this}" />
+    <!--handler ..-->
+    
+    <lightning:card  title="Table view" variant="narrow" iconName="action:record" class="slds-table_bordered">
+    </lightning:card>
+    <aura:if isTrue="{!and(and(empty(v.opportunityObject.Name), empty(v.opportunityObject.StageName)),
+                     and(empty(v.opportunityObject.CloseDate), empty(v.opportunityObject.Amount)))}" >
+        <table class="slds-table slds-table_cell-buffer slds-no-row-hover slds-table_bordered">            
+            <thead >
+                <tr class="slds-text-title_bold slds-text-title_caps ">
+                    <th class="slds-truncate slds-is-sortable " title="Opportunity Name" scope="col">
+                        Opportunity Name
+                        <lightning:icon iconName="utility:arrowdown" size="xx-small" />
+                    </th>
+                    <th scope="col" class="slds-truncate slds-is-sortable" title="Stage">
+                        Stage
+                        <lightning:icon iconName="utility:arrowdown" size="xx-small" />
+                    </th>
+                    <th scope="col" class="slds-truncate slds-is-sortable" title="Close Date">
+                        Close Date
+                        <lightning:icon iconName="utility:arrowdown" size="xx-small" />
+                    </th>
+                    <th scope="col" class="slds-truncate slds-is-sortable" title="Amount">
+                        Amount
+                        <lightning:icon iconName="utility:arrowdown" size="xx-small" />
+                    </th>
+                </tr>
+            </thead>
+        </table>              
+        <div class="slds-align_absolute-center slds-card__body" >
+            No Records To Display ..
+        </div>
+        <aura:set attribute="else" >
+            <table class="slds-table slds-table_cell-buffer slds-no-row-hover slds-table_bordered slds-table_fixed-layout">            
+                <thead>
+                    <tr class="slds-text-title_bold slds-text-title_caps ">
+                        <th aria-sort="ascending"  class="slds-truncate slds-is-sortable" title="Opportunity Name" scope="col" >
+                            Opportunity Name
+                            <lightning:icon iconName="{!v.sortOrder=='asc' ? 'utility:arrowdown' : 'utility:arrowup'}"
+                                            size="xx-small"
+                                            aura:id="Name"
+                                            onclick="{!c.sorting}" />
+                        </th>
+                        <th scope="col" class="slds-truncate slds-is-sortable" title="Stage">
+                            Stage
+                            <lightning:icon iconName="{!v.sortOrder=='asc' ? 'utility:arrowdown' : 'utility:arrowup'}"
+                                            size="xx-small"
+                                            aura:id="Stage"
+                                            onclick="{!c.sorting}" />
+                        </th>
+                        <th scope="col" class="slds-truncate slds-is-sortable" title="Close Date">
+                            Close Date
+                            <lightning:icon iconName="{!v.sortOrder=='asc' ? 'utility:arrowdown' : 'utility:arrowup'}"
+                                            size="xx-small"
+                                            aura:id="Date"
+                                            onclick="{!c.sorting}"  />
+                        </th>
+                        <th scope="col" class="slds-truncate slds-is-sortable" title="Amount">
+                            Amount
+                            <lightning:icon iconName="{!v.sortOrder=='asc' ? 'utility:arrowdown' : 'utility:arrowup'}"
+                                            size="xx-small"
+                                            aura:id="Amount"
+                                            onclick="{!c.sorting}" />
+                        </th>
+                    </tr>
+                </thead>
+                <tbody >
+                    <tr>
+                        <aura:if isTrue="{!empty(v.opportunityObject.Name[0])}" >
+                            <th>
+                                -
+                            </th>
+                            <aura:set attribute="else" >
+                                <th >
+                                    <div class="slds-truncate tooltip">
+                                        {!v.opportunityObject.Name[0]}
+                                        <span class="tooltiptext slds-popover slds-popover__body">
+                                            {!v.opportunityObject.Name[0]}
+                                        </span>
+                                    </div>
+                                </th>
+                            </aura:set>
+                        </aura:if>
+                        <aura:if isTrue="{!empty(v.opportunityObject.Stage[0])}" >
+                            <th>
+                                -
+                            </th>
+                            <aura:set attribute="else" >
+                                <th>
+                                    <div class="slds-truncate tooltip">
+                                        {!v.opportunityObject.Stage[0]}
+                                        <span class="tooltiptext slds-popover slds-popover__body">
+                                            {!v.opportunityObject.Stage[0]}
+                                        </span>
+                                    </div>
+                                </th>
+                            </aura:set>
+                        </aura:if>
+                        <aura:if isTrue="{!empty(v.opportunityObject.Date[0])}" >
+                            <th>
+                                -
+                            </th>
+                            <aura:set attribute="else" >
+                                <th>
+                                    <div class="slds-truncate tooltip">
+                                        {!v.opportunityObject.Date[0]}
+                                        <span class="tooltiptext slds-popover slds-popover__body">
+                                            {!v.opportunityObject.Date[0]}
+                                        </span>
+                                    </div>
+                                </th>
+                            </aura:set>
+                        </aura:if>
+                        <aura:if isTrue="{!empty(v.opportunityObject.Amount[0])}" >
+                            <th>
+                                -
+                            </th>
+                            <aura:set attribute="else" >
+                                <th>
+                                    <div class="slds-truncate tooltip">
+                                        {!v.opportunityObject.Amount[0]}
+                                        <span class="tooltiptext slds-popover slds-popover__body">
+                                            {!v.opportunityObject.Amount[0]}
+                                        </span>
+                                    </div>
+                                </th>
+                            </aura:set>
+                        </aura:if>
+                    </tr>
+                    <tr>
+                        <aura:if isTrue="{!empty(v.opportunityObject.Name[1])}" >
+                            <th>
+                                -
+                            </th>
+                            <aura:set attribute="else" >
+                                <th >
+                                    <div class="slds-truncate tooltip">
+                                        {!v.opportunityObject.Name[1]}
+                                        <span class="tooltiptext slds-popover slds-popover__body">
+                                            {!v.opportunityObject.Name[1]}
+                                        </span>
+                                    </div>
+                                </th>
+                            </aura:set>
+                        </aura:if>
+                        <aura:if isTrue="{!empty(v.opportunityObject.Stage[1])}" >
+                            <th>
+                                -
+                            </th>
+                            <aura:set attribute="else" >
+                                <th>
+                                    <div class="slds-truncate tooltip">
+                                        {!v.opportunityObject.Stage[1]}
+                                        <span class="tooltiptext slds-popover slds-popover__body">
+                                            {!v.opportunityObject.Stage[1]}
+                                        </span>
+                                    </div>
+                                </th>
+                            </aura:set>
+                        </aura:if>
+                        <aura:if isTrue="{!empty(v.opportunityObject.Date[1])}" >
+                            <th>
+                                -
+                            </th>
+                            <aura:set attribute="else" >
+                                <th>
+                                    <div class="slds-truncate tooltip">
+                                        {!v.opportunityObject.Date[1]}
+                                        <span class="tooltiptext slds-popover slds-popover__body">
+                                            {!v.opportunityObject.Date[1]}
+                                        </span>
+                                    </div>
+                                </th>
+                            </aura:set>
+                        </aura:if>
+                        <aura:if isTrue="{!empty(v.opportunityObject.Amount[1])}" >
+                            <th>
+                                -
+                            </th>
+                            <aura:set attribute="else" >
+                                <th>
+                                    <div class="slds-truncate tooltip">
+                                        {!v.opportunityObject.Amount[1]}
+                                        <span class="tooltiptext slds-popover slds-popover__body">
+                                            {!v.opportunityObject.Amount[1]}
+                                        </span>
+                                    </div>
+                                </th>
+                            </aura:set>
+                        </aura:if>
+                    </tr>
+                    <tr>
+                        <aura:if isTrue="{!empty(v.opportunityObject.Name[2])}" >
+                            <th>
+                                -
+                            </th>
+                            <aura:set attribute="else" >
+                                <th >
+                                    <div class="slds-truncate tooltip">
+                                        {!v.opportunityObject.Name[2]}
+                                        <span class="tooltiptext slds-popover slds-popover__body">
+                                            {!v.opportunityObject.Name[2]}
+                                        </span>
+                                    </div>
+                                </th>
+                            </aura:set>
+                        </aura:if>
+                        <aura:if isTrue="{!empty(v.opportunityObject.Stage[2])}" >
+                            <th>
+                                -
+                            </th>
+                            <aura:set attribute="else" >
+                                <th>
+                                    <div class="slds-truncate tooltip">
+                                        {!v.opportunityObject.Stage[2]}
+                                        <span class="tooltiptext slds-popover slds-popover__body">
+                                            {!v.opportunityObject.Stage[2]}
+                                        </span>
+                                    </div>
+                                </th>
+                            </aura:set>
+                        </aura:if>
+                        <aura:if isTrue="{!empty(v.opportunityObject.Date[2])}" >
+                            <th>
+                                -
+                            </th>
+                            <aura:set attribute="else" >
+                                <th>
+                                    <div class="slds-truncate tooltip">
+                                        {!v.opportunityObject.Date[2]}
+                                        <span class="tooltiptext slds-popover slds-popover__body">
+                                            {!v.opportunityObject.Date[2]}
+                                        </span>
+                                    </div>
+                                </th>
+                            </aura:set>
+                        </aura:if>
+                        <aura:if isTrue="{!empty(v.opportunityObject.Amount[2])}" >
+                            <th>
+                                -
+                            </th>
+                            <aura:set attribute="else" >
+                                <th>
+                                    <div class="slds-truncate tooltip">
+                                        {!v.opportunityObject.Amount[2]}
+                                        <span class="tooltiptext slds-popover slds-popover__body">
+                                            {!v.opportunityObject.Amount[2]}
+                                        </span>
+                                    </div>
+                                </th>
+                            </aura:set>
+                        </aura:if>
+                    </tr>
+                    <tr>
+                        <aura:if isTrue="{!empty(v.opportunityObject.Name[3])}" >
+                            <th>
+                                -
+                            </th>
+                            <aura:set attribute="else" >
+                                <th >
+                                    <div class="slds-truncate tooltip">
+                                        {!v.opportunityObject.Name[3]}
+                                        <span class="tooltiptext slds-popover slds-popover__body">
+                                            {!v.opportunityObject.Name[3]}
+                                        </span>
+                                    </div>
+                                </th>
+                            </aura:set>
+                        </aura:if>
+                        <aura:if isTrue="{!empty(v.opportunityObject.Stage[3])}" >
+                            <th>
+                                -
+                            </th>
+                            <aura:set attribute="else" >
+                                <th>
+                                    <div class="slds-truncate tooltip">
+                                        {!v.opportunityObject.Stage[3]}
+                                        <span class="tooltiptext slds-popover slds-popover__body">
+                                            {!v.opportunityObject.Stage[3]}
+                                        </span>
+                                    </div>
+                                </th>
+                            </aura:set>
+                        </aura:if>
+                        <aura:if isTrue="{!empty(v.opportunityObject.Date[3])}" >
+                            <th>
+                                -
+                            </th>
+                            <aura:set attribute="else" >
+                                <th>
+                                    <div class="slds-truncate tooltip">
+                                        {!v.opportunityObject.Date[3]}
+                                        <span class="tooltiptext slds-popover slds-popover__body">
+                                            {!v.opportunityObject.Date[3]}
+                                        </span>
+                                    </div>
+                                </th>
+                            </aura:set>
+                        </aura:if>
+                        <aura:if isTrue="{!empty(v.opportunityObject.Amount[3])}" >
+                            <th>
+                                -
+                            </th>
+                            <aura:set attribute="else" >
+                                <th>
+                                    <div class="slds-truncate tooltip">
+                                        {!v.opportunityObject.Amount[3]}
+                                        <span class="tooltiptext slds-popover slds-popover__body">
+                                            {!v.opportunityObject.Amount[3]}
+                                        </span>
+                                    </div>
+                                </th>
+                            </aura:set>
+                        </aura:if>
+                    </tr>
+                </tbody>
+            </table>
+        </aura:set>
+    </aura:if>
+</aura:component>

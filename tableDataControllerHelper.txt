@@ -1,0 +1,42 @@
+({
+    doInit : function(component, event, helper) {
+        var opportunityObjectIdArray = [];
+        var opportunityObjectIdValue = component.get("v.opportunityObject.Name");
+        for(var i=0; i<opportunityObjectIdValue.length; i++){
+            opportunityObjectIdArray.push(opportunityObjectIdValue[i]);
+        }
+        opportunityObjectIdArray.sort();
+        component.set("v.opportunityObject.Name", opportunityObjectIdArray);
+    },
+    
+    sorting : function(component, event, helper) {
+        var id = event.getSource().getLocalId();
+        var opportunityObjectValue = component.get("v.opportunityObject");
+        if(opportunityObjectValue != null || opportunityObjectValue != ""){
+            var sortDirection =component.get("v.sortOrder");
+            component.set("v.sortedBy", id);
+            helper.sortData(component, id, sortDirection);           
+        }
+    },
+    
+    sortData: function (component, id, sortDirection){
+        var sortOrderValue = component.get("v.sortOrder");
+        console.log("sortOrderValue : " + sortOrderValue);
+        var opportunityObjectIdArray = [];
+        var opportunityObjectValue = component.get("v.opportunityObject");
+        var opportunityObjectIdValue = component.get("v.opportunityObject." + id);
+        for(var i=0; i<opportunityObjectIdValue.length; i++){
+            opportunityObjectIdArray.push(opportunityObjectIdValue[i]);
+        }
+        if(sortOrderValue=="asc"){
+            opportunityObjectIdArray.sort();
+            component.set("v.sortOrder", "dsc");
+        }
+        else if(sortOrderValue=="dsc"){
+            opportunityObjectIdArray.reverse();
+            component.set("v.sortOrder", "asc");   
+        }
+        console.log("sortOrderValue :" + component.get("v.sortOrder"));
+        component.set("v.opportunityObject." + id, opportunityObjectIdArray);
+    },
+})
